@@ -1,0 +1,42 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator</title>
+</head>
+<body>
+    <form action="process.php">
+        <div>
+            <label for="rn">Receipt Number : </label>
+            <input type="number" id="rn" name="rn" placeholder="Receipt Number">
+        </div>
+        <div>
+            <label for="hn">Hospital Name : </label>
+            <input type="text" id="hn" name="hn" placeholder="Hospital Name">
+        </div>
+        <div>
+            <label for="rw">Rupees In Words : </label>
+            <input type="text" id="rw" name="rw" placeholder="Rupees In Words">
+        </div>
+        <div>
+            <label for="r">Mode Of Payment : </label>
+            <input type="radio" id="r" name="r" value="Cash"> Cash
+        <input type="radio" id="r" name="r" value="Cheque"> Cheque
+        </div>
+        <div>
+            <label for="d">Date : </label>
+            <input type="date" id="d" name="d" placeholder="Date">
+        </div>
+        <div>
+            <label for="a">Amount : </label>
+            <input type="number" id="a" name="a" placeholder="Amount">
+        </div>
+
+        <input type="submit" value="Submit"/>
+        <input type="reset" value="Reset"/>
+
+    </form>
+    
+</body>
+</html>
