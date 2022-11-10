@@ -161,7 +161,13 @@ function check(){
     document.getElementById('dt').innerHTML = document.getElementById('d').value;
     document.getElementById('hname').innerHTML = document.getElementById('hn').value;
     document.getElementById('rword').innerHTML = document.getElementById('rw').value;
-    document.getElementById('mpay').innerHTML = document.getElementById('r').value;
+   // document.getElementById('mpay').innerHTML = document.getElementById('r').value;
+    var ele = document.getElementsByName('r');             
+            for(i = 0; i < ele.length; i++) { 
+                if(ele[i].checked) 
+                document.getElementById("mpay").innerHTML = ele[i].value;
+ }
+
     document.getElementById('amount-value').innerHTML = document.getElementById('a').value;
    }
 }
