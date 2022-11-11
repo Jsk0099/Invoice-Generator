@@ -1,0 +1,97 @@
+@media print {
+    body *:not(#mysec):not(#mysec *) {
+        visibility: hidden;
+    }
+}
+
+#container {
+    border: 2px blue solid;
+    border-radius: 5px;
+    background-color: darkgray;
+    padding: 3px;
+    width: 551px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#sub-container {
+    padding: 5px;
+    border: 2px rgb(103, 103, 151) solid;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+}
+
+#title {
+    font-size: 25px;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    text-align: center;
+    color: blue;
+    background-color: aquamarine;
+
+}
+
+#mob {
+    font-size: 20px;
+    text-align: right;
+    padding-right: 11px;
+}
+
+#name {
+    font-size: 21px;
+    text-align: center;
+}
+
+#no {
+    font-size: 20px;
+    padding: 11px;
+    text-align: left;
+}
+
+#db {
+
+    position: relative;
+    display: inline-block;
+    padding-inline-start: 297px;
+    text-align: right;
+}
+
+#content {
+    padding: 11px;
+    font-size: 18px;
+    text-align: justify;
+}
+
+#amount {
+    margin: 11px;
+    font-size: 21px;
+    background-color: darkblue;
+    width: max-content;
+    color: white;
+    border: 1px black solid;
+}
+
+#sign {
+    font-size: 19px;
+    text-align: right;
+    padding-bottom: 3px;
+    padding-right: 11px;
+}
+
+span {
+
+    font-size: 19px;
+    text-decoration: underline;
+}
+
+span#amount-value {
+    font-size: 21px;
+    background-color: white;
+    border: 1px black solid;
+    padding-left: 3px;
+    padding-right: 3px;
+    color: blue;
+    text-decoration: none;
+}
