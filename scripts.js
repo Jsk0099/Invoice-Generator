@@ -1,10 +1,9 @@
+
 function check() {
-    if (document.getElementById('rn').value != '' && document.getElementById('hn').value != '' && document.getElementById('a').value != '') {
+    if (document.getElementById('rn').value && document.getElementById('hn').value && document.getElementById('d').value && document.getElementById('a').value) {
         document.getElementById('mysec').style.visibility = 'visible';
         document.getElementById('num').innerHTML = document.getElementById('rn').value;
-
         document.getElementById('hname').innerHTML = document.getElementById('hn').value;
-        // document.getElementById('rword').innerHTML = document.getElementById('rw').value;
         document.getElementById('rword').innerHTML = wordify(document.getElementById('a').value) + " Only";
 
         var ele = document.getElementsByName('r');
@@ -18,19 +17,18 @@ function check() {
         for (let i = 0; i < dt1.length; i++) {
             dt1[i].innerHTML = dt;
         }
-
         document.getElementById('amount-value').innerHTML = Intl.NumberFormat('en-IN').format(document.getElementById('a').value) + "/- ";
     } else {
-        alert('Please Fill The Data !!!');
+        alert(' Please Fill The Data !!! ');
     }
 }
 
 function printit() {
-    const elementToSave = document.querySelector("#container");
+    const elementToSave = document.querySelector("#printlayout");
     html2canvas(elementToSave).then(canvas => {
         const a = document.createElement("a");
         a.href = canvas.toDataURL("image/jpeg");
-        a.download = document.getElementById('hn').value + " invoice.jpeg";
+        a.download = document.getElementById('hn').value + " " + new Date().getDate() + "-" + new Date().getMonth() + "-" + new Date().getFullYear() + " Invoice.jpeg";
         a.click();
     });
 }

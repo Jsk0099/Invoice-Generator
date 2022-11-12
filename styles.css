@@ -1,7 +1,42 @@
-@media print {
-    body *:not(#mysec):not(#mysec *) {
-        visibility: hidden;
-    }
+#form-div {
+    border: 2px darkblue solid;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    border-radius: 11px;
+}
+
+.form-floating {
+    padding: 3px;
+}
+
+#radiogrp {
+    border: 1px rgb(204, 201, 201) solid;
+    border-radius: 3px;
+    padding: 3px;
+    margin: 3px;
+}
+
+.btn {
+    font-size: 21px;
+    margin: 3px;
+}
+
+#mysec {
+    margin-top: 11px;
+    text-align: center;
+}
+
+.btn-success {
+    width: 401px;
+}
+
+#printlayout {
+    padding-top: 5px;
+    height: 443px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 561px;
 }
 
 #container {
@@ -30,7 +65,6 @@
     text-align: center;
     color: blue;
     background-color: aquamarine;
-
 }
 
 #mob {
@@ -44,18 +78,10 @@
     text-align: center;
 }
 
-#no {
+#no,
+#db {
     font-size: 20px;
     padding: 11px;
-    text-align: left;
-}
-
-#db {
-
-    position: relative;
-    display: inline-block;
-    padding-inline-start: 297px;
-    text-align: right;
 }
 
 #content {
@@ -67,13 +93,16 @@
 #amount {
     margin: 11px;
     font-size: 21px;
-    background-color: darkblue;
+    padding-left: 5px;
+    background-color: rgb(2, 2, 109);
     width: max-content;
     color: white;
+    font-weight: 501;
     border: 1px black solid;
 }
 
 #sign {
+
     font-size: 19px;
     text-align: right;
     padding-bottom: 3px;
@@ -81,7 +110,6 @@
 }
 
 span {
-
     font-size: 19px;
     text-decoration: underline;
 }
