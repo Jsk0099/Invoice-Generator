@@ -1,38 +1,85 @@
+
+let hn = "", amount = 0, mode = "", date = "";
+const firebaseConfig = {
+    apiKey: "AIzaSyAEffAt9qqng_qwurmlj-0FxL5xF4ttXLQ",
+    authDomain: "trying-a6456.firebaseapp.com",
+    projectId: "trying-a6456",
+    storageBucket: "trying-a6456.appspot.com",
+    messagingSenderId: "269899344145",
+    appId: "1:269899344145:web:4a32fa415a12ac0368c4b0"
+};
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+// Adding Data To FireStore
+function add(hn, amount, mode, date, dt) {
+   // dt = new Date().getDate() + "" + (new Date().getMonth() + 1) + new Date().getFullYear() + "-" + new Date().getSeconds();
+    db.collection("X-Ray").doc(dt).set({
+        Date: date,
+        Amount: amount,
+        Mode: mode,
+        Name: hn
+    })
+        .then(() => {
+            const elementToSave = document.querySelector("#printlayout");
+            html2canvas(elementToSave).then(canvas => {
+                const a = document.createElement("a");
+                a.href = canvas.toDataURL("image/jpeg");
+                let dt = new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear();
+                a.download = hn + " " + dt + " Invoice.jpeg";
+                a.click();
+
+            });
+            /*  alert("Document successfully Downloaded!"); */
+        })
+        .catch((error) => {
+            //alert("Error While Downloading Document: ", error);
+            alert("Error While Downloading Document: ");
+        });
+}
+
 function check() {
-    if (document.getElementById('rn').value != '' && document.getElementById('hn').value != '' && document.getElementById('a').value != '') {
+
+    if (document.getElementById('rn').value && document.getElementById('hn').value && document.getElementById('d').value && document.getElementById('a').value) {
         document.getElementById('mysec').style.visibility = 'visible';
         document.getElementById('num').innerHTML = document.getElementById('rn').value;
-
         document.getElementById('hname').innerHTML = document.getElementById('hn').value;
-        // document.getElementById('rword').innerHTML = document.getElementById('rw').value;
         document.getElementById('rword').innerHTML = wordify(document.getElementById('a').value) + " Only";
 
         var ele = document.getElementsByName('r');
         for (i = 0; i < ele.length; i++) {
             if (ele[i].checked)
-                document.getElementById("mpay").innerHTML = ele[i].value;
+                mode = document.getElementById("mpay").innerHTML = ele[i].value;
         }
-        let dt = new Date(document.getElementById('d').value);
-        dt = dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear();
+        date = new Date(document.getElementById('d').value);
+        date = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
         let dt1 = document.getElementsByClassName('dt');
         for (let i = 0; i < dt1.length; i++) {
-            dt1[i].innerHTML = dt;
+            dt1[i].innerHTML = date;
         }
-
         document.getElementById('amount-value').innerHTML = Intl.NumberFormat('en-IN').format(document.getElementById('a').value) + "/- ";
+        hn = document.getElementById('hn').value;
+        amount = document.getElementById('a').value;
+
+
     } else {
-        alert('Please Fill The Data !!!');
+        alert(' Please Fill The Data !!! ');
     }
 }
 
 function printit() {
-    const elementToSave = document.querySelector("#container");
+    /* const elementToSave = document.querySelector("#printlayout");
     html2canvas(elementToSave).then(canvas => {
         const a = document.createElement("a");
         a.href = canvas.toDataURL("image/jpeg");
-        a.download = document.getElementById('hn').value + " invoice.jpeg";
-        a.click();
-    });
+        let dt = new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear();
+        add(hn, amount, mode, date, dt);
+        a.download = hn + " " + dt + " Invoice.jpeg";
+        a.click(); */
+
+    let dt = new Date().getDate() + "" + (new Date().getMonth() + 1) + "" +"-"+ new Date().getHours()+":" + new Date().getMinutes()+":"+new Date().getSeconds();
+    add(hn, amount, mode, date, dt);
+
+    // });
 }
 
 const wordify = (num) => {

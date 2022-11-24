@@ -5,61 +5,71 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="apple-touch-icon" sizes="180x180" href="image/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://github.com/Jsk0099/Invoice-Generator/tree/main/image/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/image/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
     <link rel="manifest" href="image/site.webmanifest">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="scripts.js"></script>
     <title>Invoice Generator</title>
 </head>
 
 <body>
+    <section>
+        <div id="form-div" class="col-md-3">
+            <div class="form-floating ">
+                <input type="number" class="form-control" id="rn" placeholder="Receipt Number">
+                <label for="rn">Receipt Number</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="hn" placeholder="Hospital Name">
+                <label for="hn">Hospital Name</label>
+            </div>
 
-    <div>
-        <label for="rn">Receipt Number : </label>
-        <input type="number" id="rn" placeholder="Receipt Number" value="">
-    </div>
-    <div>
-        <label for="hn">Hospital Name : </label>
-        <input type="text" id="hn" name="hn" placeholder="Hospital Name" value="">
-    </div>
-    <div>
-        <label for="r">Mode Of Payment : </label>
-        <input type="radio" id="r" name="r" value="Cash" checked> Cash
-        <input type="radio" id="r" name="r" value="Cheque"> Cheque
-    </div>
-    <div>
-        <label for="d">Date : </label>
-        <input type="date" id="d" name="d" placeholder="Date" value="">
-    </div>
-    <div>
-        <label for="a">Amount : </label>
-        <input type="number" id="a" name="a" placeholder="Amount" value="">
-    </div>
-    <button onclick="check()">Generate Invoice</button>
-
-    <section id="mysec" style="visibility: hidden;">
-        <div id="container">
-            <div id="sub-container">
-                <div id="title">Receipt</div>
-                <div id="mob">Mo. 8347809913 <br /> 9408916016</div>
-                <div id="name">____________BHARAT SOLANKI____________</div>
-                <div id="no">No. <span id="num"></span>
-                    <div id="db">Date : <span class="dt"></span> </div>
-                </div>
-                <div id="content">Received With Thanks From <span id="hname"></span> a sum of rupees <span
-                        id="rword"></span> By <span id="mpay"></span> Dated <span class="dt"></span> as X-Ray
-                    Charges.
-                </div>
-                <div id="amount">Rs. <span id="amount-value"></span> </div>
-                <div id="sign">Signature <br> Bharat Solanki</div>
-                <!-- <div id="bs"></div> -->
-
+            <div class="form-floating ">
+                <input type="date" class="form-control" id="d" placeholder="Date Of Bill">
+                <label for="d">Date Of Bill</label>
+            </div>
+            <div class="form-floating">
+                <input type="number" class="form-control" id="a" placeholder="Amount">
+                <label for="a">Amount</label>
+            </div>
+            <div id="radiogrp">
+                <label class="form-check-label" for="r">Mode Of Payment </label><br />
+                <input class="form-check-input" type="radio" name="r" id="r" value="Cash" checked> Cash
+                <input class="form-check-input" type="radio" name="r" id="r" value="Cheque"> Cheque
+            </div>
+            <div class="d-grid gap-2">
+                <button type="button" onclick="check()" class="btn btn-primary">Generate Invoice</button>
             </div>
         </div>
+    </section>
 
-        <button onclick="printit()">Download</button>
+    <section id="mysec" style="visibility: hidden;">
+        <div id="printlayout">
+            <div id="container">
+                <div id="sub-container">
+                    <div id="title">Receipt</div>
+                    <div id="mob">Mo. 8347809913 <br /> 9408916016</div>
+                    <div id="name">____________BHARAT&nbsp;SOLANKI____________</div>
+                    <div class="d-flex justify-content-between">
+                        <div id="no">No. <span id="num"></span></div>
+                        <div id="db">Date : <span class="dt"></span> </div>
+                    </div>
+                    <div id="content">Received With Thanks From <span id="hname"></span> a sum of rupees <span
+                            id="rword"></span> By <span id="mpay"></span> Dated <span class="dt"></span> as X-Ray
+                        Charges.
+                    </div>
+                    <div id="amount">Rs. <span id="amount-value"></span> </div>
+                    <div id="sign">Signature &nbsp;&nbsp;&nbsp; <br> Bharat Solanki</div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-success" onclick="printit()">Download</button>
     </section>
 
 </body>
