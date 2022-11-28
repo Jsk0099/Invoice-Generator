@@ -12,10 +12,10 @@ const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 // Adding Data To FireStore
 function add(hn, amount, mode, date, dt) {
-   // dt = new Date().getDate() + "" + (new Date().getMonth() + 1) + new Date().getFullYear() + "-" + new Date().getSeconds();
+    // dt = new Date().getDate() + "" + (new Date().getMonth() + 1) + new Date().getFullYear() + "-" + new Date().getSeconds();
     db.collection("X-Ray").doc(dt).set({
         Date: date,
-        Amount: amount,
+        Amount: Number(amount),
         Mode: mode,
         Name: hn
     })
@@ -36,6 +36,71 @@ function add(hn, amount, mode, date, dt) {
             alert("Error While Downloading Document: ");
         });
 }
+let sfetchamount = 0, efetchamount = 0;
+//fetch(0,500);
+//console.log("next");
+//fetch(0,1000);
+function fetch(sfetchamount, efetchamount) {
+    //console.log("load");
+
+    // var output =
+    // [START get_multiple]
+    db.collection("X-Ray").where("Amount", ">=", sfetchamount).where('Amount', "<=", efetchamount)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+            });
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        });
+    // console.log("Done");
+}
+let ar = [];
+function fetchall() {
+    let c = 0;
+    db.collection("X-Ray").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            c++;
+            ar.push(doc.data());
+            //console.log(doc.id, " => ", doc.data());
+        });
+        //console.log("Count : " + c);
+        document.querySelector('#c').innerHTML = "Total Record Count : "+c;
+        document.querySelector('#c').style.visibility = 'visible';
+    });
+    document.getElementById('tab').style.visibility = 'visible';
+    // console.log("Array : "+ar);
+    ar.forEach(ele => {
+        //ele.Name + " | " + ele.Mode + " | " + ele.Amount;
+        //console.log(ele.Name + " | " + ele.Date + " | " + ele.Mode + " | " + ele.Amount)
+        addtotable(ele.Name, ele.Date, ele.Mode, ele.Amount);
+    });
+}
+function addtotable(name, date, mode, amount) {
+    let x = document.createElement('tr');
+    //let td4 = document.createElement('td').innerHTML = id;
+    let td0 = document.createElement('td');
+    let td1 = document.createElement('td');
+    let td2 = document.createElement('td');
+    let td3 = document.createElement('td');
+
+    td0.innerHTML = name;
+    td1.innerHTML = date;
+    td2.innerHTML = mode;
+    td3.innerHTML = amount;
+    x.append(td0);
+    x.append(td1);
+    x.append(td2);
+    x.append(td3);
+    document.getElementById('rec').append(x);
+}
+
+
+
 
 function check() {
 
@@ -58,7 +123,7 @@ function check() {
         }
         document.getElementById('amount-value').innerHTML = Intl.NumberFormat('en-IN').format(document.getElementById('a').value) + "/- ";
         hn = document.getElementById('hn').value;
-        amount = document.getElementById('a').value;
+        amount = parseInt(document.getElementById('a').value);
 
 
     } else {
@@ -76,7 +141,7 @@ function printit() {
         a.download = hn + " " + dt + " Invoice.jpeg";
         a.click(); */
 
-    let dt = new Date().getDate() + "" + (new Date().getMonth() + 1) + "" +"-"+ new Date().getHours()+":" + new Date().getMinutes()+":"+new Date().getSeconds();
+    let dt = new Date().getDate() + "" + (new Date().getMonth() + 1) + "" + "-" + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
     add(hn, amount, mode, date, dt);
 
     // });
