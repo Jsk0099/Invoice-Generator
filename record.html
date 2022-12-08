@@ -22,14 +22,32 @@
             border: 1px red solid;
         }
 
-        div {
+        div#c{
             box-shadow: violet;
             border: 1px rgb(35, 17, 196) solid;
             text-align: center;
             align-content: center;
             align-items: center;
         }
-
+        div{
+            text-align: center;
+        }
+div button{
+margin-top: 5px;
+padding: 3px;
+font-size: 19px;
+background-color: aqua;
+color: darkblue;
+font-weight: 500;
+border: 1px solid green;
+border-radius: 5px;
+margin-bottom: 5px;
+}
+button:hover{
+color :rgb(18, 31, 215);
+background-color: rgb(35, 148, 20);
+border: aqua 1px dotted;
+}
         th {
             padding: 5px;
             text-align: center;
@@ -58,17 +76,25 @@
             font-weight: 500;
             border: 2px red solid;
         }
+
+        td::selection {
+            color: rgb(0, 208, 255);
+        }
     </style>
 </head>
 
 <body>
 
-    <button onclick="fetchall()">FetchAll</button>
-
+    
+    <div> Starting Range : <input type="number" id="sfetch" value="0"> </div>
+    <div> Ending Range : <input type="number" id="efetch" value="0"> </div>
+    <div> <button onclick="fetchall()">FetchAll</button>
+     <button onclick="fetch()">Fetch</button> </div>
     <div id="c" style="visibility:hidden ;"></div>
 
     <table id="tab">
         <thead>
+            <th>ID</th>
             <th>Name</th>
             <th>Date</th>
             <th>Mode</th>

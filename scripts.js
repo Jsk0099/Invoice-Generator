@@ -36,71 +36,78 @@ function add(hn, amount, mode, date, dt) {
             alert("Error While Downloading Document: ");
         });
 }
-let sfetchamount = 0, efetchamount = 0;
-//fetch(0,500);
-//console.log("next");
-//fetch(0,1000);
-function fetch(sfetchamount, efetchamount) {
-    //console.log("load");
 
-    // var output =
-    // [START get_multiple]
-    db.collection("X-Ray").where("Amount", ">=", sfetchamount).where('Amount', "<=", efetchamount)
-        .get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-                console.log(doc.id, " => ", doc.data());
+function fetch() {
+
+    document.getElementById('rec').innerHTML = "";
+    let c = 0;
+    let sfetchamount = parseInt(document.querySelector('#sfetch').value);
+    let efetchamount = parseInt(document.querySelector('#efetch').value);
+
+    if (sfetchamount != 0 && efetchamount != 0) {
+        db.collection("X-Ray").where("Amount", ">=", sfetchamount).where('Amount', "<=", efetchamount)
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    //console.log(doc.id, " => ", doc.data());
+                    c++;
+                    item(doc.id, doc.data());
+                });
+                document.querySelector('#c').innerHTML = "Total Record Count : " + c;
+                document.querySelector('#c').style.visibility = 'visible';
+            })
+            .catch((error) => {
+                console.log("Error getting documents: ");
             });
-        })
-        .catch((error) => {
-            console.log("Error getting documents: ", error);
-        });
-    // console.log("Done");
+        document.getElementById('tab').style.visibility = 'visible';
+    }
+    else {
+        document.getElementById('tab').style.visibility = 'hidden';
+        alert("Please Provide valid Input !!!");
+    }
 }
-let ar = [];
+
 function fetchall() {
+    document.getElementById('rec').innerHTML = "";
     let c = 0;
     db.collection("X-Ray").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             c++;
-            ar.push(doc.data());
+            item(doc.id, doc.data());
             //console.log(doc.id, " => ", doc.data());
         });
-        //console.log("Count : " + c);
-        document.querySelector('#c').innerHTML = "Total Record Count : "+c;
+        document.querySelector('#c').innerHTML = "Total Record Count : " + c;
         document.querySelector('#c').style.visibility = 'visible';
     });
     document.getElementById('tab').style.visibility = 'visible';
-    // console.log("Array : "+ar);
-    ar.forEach(ele => {
-        //ele.Name + " | " + ele.Mode + " | " + ele.Amount;
-        //console.log(ele.Name + " | " + ele.Date + " | " + ele.Mode + " | " + ele.Amount)
-        addtotable(ele.Name, ele.Date, ele.Mode, ele.Amount);
-    });
+
 }
-function addtotable(name, date, mode, amount) {
+function item(id, ele) {
+    addtotable(id, ele.Name, ele.Date, ele.Mode, ele.Amount)
+}
+function addtotable(id, name, date, mode, amount) {
+
     let x = document.createElement('tr');
-    //let td4 = document.createElement('td').innerHTML = id;
+    let td4 = document.createElement('td');
     let td0 = document.createElement('td');
     let td1 = document.createElement('td');
     let td2 = document.createElement('td');
     let td3 = document.createElement('td');
 
+    td4.innerHTML = id;
     td0.innerHTML = name;
     td1.innerHTML = date;
     td2.innerHTML = mode;
     td3.innerHTML = amount;
+    x.append(td4);
     x.append(td0);
     x.append(td1);
     x.append(td2);
     x.append(td3);
     document.getElementById('rec').append(x);
 }
-
-
-
 
 function check() {
 
