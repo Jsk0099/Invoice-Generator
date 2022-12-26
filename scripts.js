@@ -1,6 +1,7 @@
 
-let hn = "", amount = 0, mode = "", date = "";
-const firebaseConfig = {
+let hn = "", amount = 0, mode = "", date = "";/*
+co
+st firebaseConfig = {
     apiKey: "AIzaSyAEffAt9qqng_qwurmlj-0FxL5xF4ttXLQ",
     authDomain: "trying-a6456.firebaseapp.com",
     projectId: "trying-a6456",
@@ -108,7 +109,7 @@ function addtotable(id, name, date, mode, amount) {
     x.append(td3);
     document.getElementById('rec').append(x);
 }
-
+*/
 function check() {
 
     if (document.getElementById('rn').value && document.getElementById('hn').value && document.getElementById('d').value && document.getElementById('a').value) {
@@ -139,19 +140,19 @@ function check() {
 }
 
 function printit() {
-    /* const elementToSave = document.querySelector("#printlayout");
+     const elementToSave = document.querySelector("#printlayout");
     html2canvas(elementToSave).then(canvas => {
         const a = document.createElement("a");
         a.href = canvas.toDataURL("image/jpeg");
         let dt = new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear();
         add(hn, amount, mode, date, dt);
         a.download = hn + " " + dt + " Invoice.jpeg";
-        a.click(); */
+        a.click();
 
-    let dt = new Date().getDate() + "" + (new Date().getMonth() + 1) + "" + "-" + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
-    add(hn, amount, mode, date, dt);
+   /* let dt = new Date().getDate() + "" + (new Date().getMonth() + 1) + "" + "-" + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+    add(hn, amount, mode, date, dt); */
 
-    // });
+     });
 }
 
 const wordify = (num) => {
