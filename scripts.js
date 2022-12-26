@@ -145,7 +145,7 @@ function printit() {
         const a = document.createElement("a");
         a.href = canvas.toDataURL("image/jpeg");
         let dt = new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear();
-        add(hn, amount, mode, date, dt);
+        // add(hn, amount, mode, date, dt);
         a.download = hn + " " + dt + " Invoice.jpeg";
         a.click();
 
