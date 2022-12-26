@@ -31,7 +31,7 @@ function add(hn, amount, mode, date, dt) {
 
             });
             /*  alert("Document successfully Downloaded!"); */
-        })
+     /*   })
         .catch((error) => {
             //alert("Error While Downloading Document: ", error);
             alert("Error While Downloading Document: ");
