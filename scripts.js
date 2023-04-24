@@ -10,6 +10,20 @@ const firebaseConfig = {
 };
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+
+function authUser(){
+db.collection("UserAuth").where("UserName"=="Admin").where("Password"=="admin").get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    alert(JSON.stringify(doc.id));
+                });
+     .catch((error) => {
+                console.log("Error getting documents: ");
+            });
+        document.getElementById('tab').style.visibility = 'visible';
+    }
+}
+
 // Adding Data To FireStore
 function add(hn, amount, mode, date, dt) {
     // dt = new Date().getDate() + "" + (new Date().getMonth() + 1) + new Date().getFullYear() + "-" + new Date().getSeconds();
