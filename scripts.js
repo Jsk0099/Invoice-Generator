@@ -17,9 +17,9 @@ db.collection("UserAuth").where("UserName"=="Admin").where("Password"=="admin").
                 querySnapshot.forEach((doc) => {
                     alert(JSON.stringify(doc.id));
                 });
-     .catch((error) => {
-                console.log("Error getting documents: ");
-            });
+    //  .catch((error) => {
+    //             console.log("Error getting documents: ");
+    //         });
     })
 }
 authUser();
