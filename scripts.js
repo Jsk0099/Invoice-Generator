@@ -1,7 +1,6 @@
 
-let hn = "", amount = 0, mode = "", date = "";/*
-co
-st firebaseConfig = {
+let hn = "", amount = 0, mode = "", date = "";
+const firebaseConfig = {
     apiKey: "AIzaSyAEffAt9qqng_qwurmlj-0FxL5xF4ttXLQ",
     authDomain: "trying-a6456.firebaseapp.com",
     projectId: "trying-a6456",
@@ -109,7 +108,7 @@ function addtotable(id, name, date, mode, amount) {
     x.append(td3);
     document.getElementById('rec').append(x);
 }
-*/
+
 function check() {
 
     if (document.getElementById('rn').value && document.getElementById('hn').value && document.getElementById('d').value && document.getElementById('a').value) {
