@@ -20,10 +20,9 @@ db.collection("UserAuth").where("UserName"=="Admin").where("Password"=="admin").
      .catch((error) => {
                 console.log("Error getting documents: ");
             });
-        document.getElementById('tab').style.visibility = 'visible';
-    }
+    })
 }
-
+authUser();
 // Adding Data To FireStore
 function add(hn, amount, mode, date, dt) {
     // dt = new Date().getDate() + "" + (new Date().getMonth() + 1) + new Date().getFullYear() + "-" + new Date().getSeconds();
