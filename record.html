@@ -111,8 +111,22 @@ border: aqua 1px dotted;
     </div> -->
     <div id="test">
     </div>
+    <div id="test1">
+    </div>
     <script>
     document.getElementById('test').innerHTML = navigator.userAgent;
+        var isMobile = (function() {
+			if (navigator.userAgent && (navigator.userAgent.match(/Android/i)
+				|| navigator.userAgent.match(/webOS/i)
+				|| navigator.userAgent.match(/iPhone/i)
+				|| navigator.userAgent.match(/iPad/i)
+				|| navigator.userAgent.match(/iPod/i)
+				|| navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent
+				.match(/Windows Phone/i))) {
+				return false;
+			}
+		})
+        document.getElementById('test1').innerHTML = isMobile();
     </script>
 </body>
 
