@@ -70,7 +70,7 @@
         </div>
     </div>
  
-  <script>
+ <!--  <script>
     const HEADER_HEIGHT = 52; // Adjust this value
     const FOOTER_HEIGHT = 43; // Adjust this value
  
@@ -125,6 +125,71 @@
           fileUpload.classList.remove('hover');
       }, 1000);
     };
+  </script> -->
+
+  <script>
+    document.getElementById('pdfInput').onchange = async () => {
+      const fileUpload = document.getElementById('fileUpload');
+      const text = document.getElementById('text');
+      fileUpload.classList.add('hover');
+      text.textContent = 'Processing...';
+      const input = document.getElementById('pdfInput');
+      const file = input.files[0];
+      if (!file) return;
+
+      const arrayBuffer = await file.arrayBuffer();
+      const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+
+      // Set the height of the header and footer in px
+      const headerHeight = 101; // Example header height in px
+      const footerHeight = 43; // Example footer height in px
+
+      // Get the total number of pages
+      const totalPages = pdfDoc.getPages().length;
+
+      // Loop through all pages
+      for (let i = 0; i < totalPages; i++) {
+        const page = pdfDoc.getPages()[i];
+        const { width, height } = page.getSize();
+
+        // Clear the header content: add a white rectangle over the header area
+        page.drawRectangle({
+          x: 0,
+          y: height - headerHeight,
+          width: width,
+          height: headerHeight,
+          color: PDFLib.rgb(1, 1, 1), // White color
+        });
+
+        // Clear the footer content: add a white rectangle over the footer area
+        page.drawRectangle({
+          x: 0,
+          y: 0,
+          width: width,
+          height: footerHeight,
+          color: PDFLib.rgb(1, 1, 1), // White color
+        });
+      }
+
+      // Convert the modified PDF to a byte array
+      const pdfBytes = await pdfDoc.save();
+
+      // Create a Blob from the PDF bytes
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+      // Create a download link for the modified PDF
+      const downloadLink = document.createElement("a");
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download = file.name;
+      downloadLink.click();
+
+      text.textContent = 'File Downloaded';
+      setTimeout(() => {
+          text.textContent = 'Upload and Download Your File';
+          fileUpload.classList.remove('hover');
+      }, 1000);
+      
+    }
   </script>
 </body>
 </html>
