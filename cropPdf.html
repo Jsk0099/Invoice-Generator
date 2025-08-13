@@ -136,7 +136,7 @@
       const input = document.getElementById('pdfInput');
       const file = input.files[0];
       if (!file) return;
-
+      saveDetails(file.name);
       const arrayBuffer = await file.arrayBuffer();
       const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
 
@@ -190,6 +190,32 @@
       }, 1000);
       
     }
+
+  function saveDetails(filename){
+     // Options for fetch
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"  // Tells server the body is JSON
+        },
+        body: JSON.stringify({name: filename})  // Convert JS object to JSON string
+      };
+
+      // Make the POST request
+      fetch("https://invite-ease.vercel.app/cropPdf", options)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();  // Parse JSON response
+        })
+        .then(data => {
+          console.log("Success:", data);  // Handle successful response
+        })
+        .catch(error => {
+          console.error("Error:", error);  // Handle errors
+        });
+   }
   </script>
 </body>
 </html>
