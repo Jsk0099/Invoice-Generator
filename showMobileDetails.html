@@ -1,19 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile Details</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- <link rel="stylesheet" href="styles.css" /> -->
+  <link rel="manifest" href="manifest.json">
+  <title>Image Filter PWA</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 2rem;
+    }
+
+    .container {
+        max-width: 500px;
+        margin: auto;
+    }
+
+    img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 1rem;
+        transition: filter 0.3s ease;
+    }
+
+  </style>
+    <script>
+        const image = document.getElementById('filtered-image');
+        const filterSelect = document.getElementById('filter-select');
+
+        filterSelect.addEventListener('change', () => {
+            image.style.filter = filterSelect.value;
+        });
+
+    </script>
 </head>
 <body>
-    <div id="op"></div>
-    <script>
-        window.addEventListener("load", () => {
-            let s = 'UserAgent: '+navigator.userAgent + '\n' + 'Connection: \n Downlink:'+ navigator.connection.downlink + '\n effectiveType: ' + navigator.connection.effectiveType + '\n rtt: '+ navigator.connection.rtt;
-            
-            document.getElementById('op').innerText = s;
-
-        });
-    </script>
+  <h1>Image Filter PWA</h1>
+  <div class="container">
+    <img id="filtered-image" src="/image.jpg" alt="Filtered" />
+    <select id="filter-select">
+      <option value="none">None</option>
+      <option value="grayscale(100%)">Grayscale</option>
+      <option value="sepia(100%)">Sepia</option>
+      <option value="blur(5px)">Blur</option>
+      <option value="contrast(200%)">High Contrast</option>
+      <option value="brightness(150%)">Bright</option>
+    </select>
+  </div>
+  <!-- <script src="script.js"></script> -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker Registered'));
+    }
+  </script>
 </body>
 </html>
