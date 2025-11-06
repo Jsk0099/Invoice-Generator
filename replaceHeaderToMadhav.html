@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Crop Header/Footer from PDF</title>
+  <title>Madhav X-Ray Clinic</title>
   <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <!-- <link rel="stylesheet" href="styles.css"> -->
     <style>
@@ -17,15 +17,14 @@
         }
 
         .btn{
-          background: none;
-          outline: none;
-          border: none;
-          font-size: 21px;
-          margin: 3px;
-
-          a{
-              color: white;
-          }
+            background: none;
+            outline: none;
+            border: none;
+            font-size: 21px;
+            margin: 3px;
+            a{
+                color: white;
+            }
         }
 
         .wrapper{
@@ -76,72 +75,15 @@
     </style>
 </head>
 <body>
-   <section>
-     <button class="btn"><a href="./replaceHeaderToMadhav.html" > Madhav Header PDF </a></button>
+    <section>
+     <button class="btn"><a href="./cropPdf.html" > Crop PDF </a></button>
    </section>
     <div class="wrapper">
         <div id="fileUpload" class="file-upload">
             <input type="file" id="pdfInput" accept="application/pdf" />
-            <span id="text"> Upload and Download Your File </span>
+            <span id="text"> Upload and Download Your File With Madhav Header </span>
         </div>
     </div>
- 
- <!--  <script>
-    const HEADER_HEIGHT = 52; // Adjust this value
-    const FOOTER_HEIGHT = 43; // Adjust this value
- 
-    document.getElementById('pdfInput').onchange = async () => {
-      const fileUpload = document.getElementById('fileUpload');
-      const text = document.getElementById('text');
-      fileUpload.classList.add('hover');
-      text.textContent = 'Processing...';
-      const input = document.getElementById('pdfInput');
-      if (!input.files.length) {
-        alert("Please upload a PDF file.");
-        text.textContent = 'Upload and Download Your File';
-        fileUpload.classList.remove('hover');
-        return;
-      }
- 
-      const file = input.files[0];
-      const arrayBuffer = await file.arrayBuffer();
-      const sourcePdf = await PDFLib.PDFDocument.load(arrayBuffer);
-      const outputPdf = await PDFLib.PDFDocument.create();
- 
-      const totalPages = sourcePdf.getPageCount();
- 
-      for (let i = 0; i < totalPages; i++) {
-        const srcPage = sourcePdf.getPage(i);
-        const { width, height } = srcPage.getSize();
- 
-        const contentHeight = height - HEADER_HEIGHT - FOOTER_HEIGHT;
- 
-        const [croppedPage] = await outputPdf.copyPages(sourcePdf, [i]);
-        croppedPage.setSize(width, contentHeight);
-        croppedPage.setCropBox(0, FOOTER_HEIGHT, width, contentHeight);
- 
-        outputPdf.addPage(croppedPage);
-      }
- 
-      const pdfBytes = await outputPdf.save();
- 
-      // Trigger download
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = file.name;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      text.textContent = 'File Downloaded';
-
-      setTimeout(() => {
-          text.textContent = 'Upload and Download Your File';
-          fileUpload.classList.remove('hover');
-      }, 1000);
-    };
-  </script> -->
  
   <script>
     document.getElementById('pdfInput').onchange = async () => {
@@ -155,6 +97,11 @@
       saveDetails(file.name);
       const arrayBuffer = await file.arrayBuffer();
       const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+
+      // Load the Madhav header image
+      const imageResponse = await fetch('Madhav-x-ray.png');
+      const imageArrayBuffer = await imageResponse.arrayBuffer();
+      const headerImage = await pdfDoc.embedPng(imageArrayBuffer);
 
       // Set the height of the header and footer in px
       const headerHeight = 101; // Example header height in px
@@ -175,6 +122,17 @@
           width: width,
           height: headerHeight,
           color: PDFLib.rgb(1, 1, 1), // White color
+        });
+
+        // Add the Madhav header image
+        const imageWidth = width; // Use full page width
+        const imageHeight = headerHeight; // Use header height
+        
+        page.drawImage(headerImage, {
+          x: 0,
+          y: height - headerHeight,
+          width: imageWidth,
+          height: imageHeight,
         });
 
         // Clear the footer content: add a white rectangle over the footer area
@@ -201,7 +159,7 @@
 
       text.textContent = 'File Downloaded';
       setTimeout(() => {
-          text.textContent = 'Upload and Download Your File';
+          text.textContent = 'Upload and Download Your File With Madhav Header';
           fileUpload.classList.remove('hover');
       }, 1000);
       
