@@ -144,7 +144,7 @@ function check() {
         document.getElementById('amount-value').innerHTML = Intl.NumberFormat('en-IN').format(document.getElementById('a').value) + "/- ";
         hn = document.getElementById('hn').value;
         amount = parseInt(document.getElementById('a').value);
-
+        saveDetails({Name: hn, Amount: amount, Mode: mode, Date: date, Generate: true});
 
     } else {
         alert(' Please Fill The Data !!! ');
@@ -154,6 +154,7 @@ function check() {
 function printit() {
      const elementToSave = document.querySelector("#printlayout");
     html2canvas(elementToSave).then(canvas => {
+        saveDetails({Name: hn, Amount: amount, Mode: mode, Date: date, Download: true});
         const a = document.createElement("a");
         a.href = canvas.toDataURL("image/jpeg");
         let dt = new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear();
@@ -165,6 +166,32 @@ function printit() {
     add(hn, amount, mode, date, dt); */
 
      });
+}
+
+function saveDetails(params){
+    // Options for fetch
+    const options = {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"  // Tells server the body is JSON
+    },
+    body: JSON.stringify(params)  // Convert JS object to JSON string
+    };
+
+    // Make the POST request
+    fetch("https://records-red.vercel.app/records", options)
+    .then(response => {
+        if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();  // Parse JSON response
+    })
+    .then(data => {
+        console.log("Success:", data);  // Handle successful response
+    })
+    .catch(error => {
+        console.error("Error:", error);  // Handle errors
+    });
 }
 
 const wordify = (num) => {
@@ -221,3 +248,4 @@ const wordify = (num) => {
     } else res = "";
     return res
 };
+
