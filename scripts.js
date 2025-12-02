@@ -50,36 +50,36 @@ function add(hn, amount, mode, date, dt) {
         });
 }
 
-function fetch() {
+// function fetch() {
 
-    document.getElementById('rec').innerHTML = "";
-    let c = 0;
-    let sfetchamount = parseInt(document.querySelector('#sfetch').value);
-    let efetchamount = parseInt(document.querySelector('#efetch').value);
+//     document.getElementById('rec').innerHTML = "";
+//     let c = 0;
+//     let sfetchamount = parseInt(document.querySelector('#sfetch').value);
+//     let efetchamount = parseInt(document.querySelector('#efetch').value);
 
-    if (sfetchamount != 0 && efetchamount != 0) {
-        db.collection("X-Ray").where("Amount", ">=", sfetchamount).where('Amount', "<=", efetchamount)
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
-                    //console.log(doc.id, " => ", doc.data());
-                    c++;
-                    item(doc.id, doc.data());
-                });
-                document.querySelector('#c').innerHTML = "Total Record Count : " + c;
-                document.querySelector('#c').style.visibility = 'visible';
-            })
-            .catch((error) => {
-                console.log("Error getting documents: ");
-            });
-        document.getElementById('tab').style.visibility = 'visible';
-    }
-    else {
-        document.getElementById('tab').style.visibility = 'hidden';
-        alert("Please Provide valid Input !!!");
-    }
-}
+//     if (sfetchamount != 0 && efetchamount != 0) {
+//         db.collection("X-Ray").where("Amount", ">=", sfetchamount).where('Amount', "<=", efetchamount)
+//             .get()
+//             .then((querySnapshot) => {
+//                 querySnapshot.forEach((doc) => {
+//                     // doc.data() is never undefined for query doc snapshots
+//                     //console.log(doc.id, " => ", doc.data());
+//                     c++;
+//                     item(doc.id, doc.data());
+//                 });
+//                 document.querySelector('#c').innerHTML = "Total Record Count : " + c;
+//                 document.querySelector('#c').style.visibility = 'visible';
+//             })
+//             .catch((error) => {
+//                 console.log("Error getting documents: ");
+//             });
+//         document.getElementById('tab').style.visibility = 'visible';
+//     }
+//     else {
+//         document.getElementById('tab').style.visibility = 'hidden';
+//         alert("Please Provide valid Input !!!");
+//     }
+// }
 
 function fetchall() {
     document.getElementById('rec').innerHTML = "";
@@ -248,4 +248,5 @@ const wordify = (num) => {
     } else res = "";
     return res
 };
+
 
