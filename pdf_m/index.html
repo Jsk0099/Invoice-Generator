@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#1976d2">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+  <!-- <link rel="manifest" href="icons/site.webmanifest"> -->
+  <title>PDF Manipulation</title>
+  <script src="./pdf-lib.min.js"></script>
+    <style>
+        html{
+            height:100%;
+        }
+
+        body{
+            
+            background-color:#294362;
+            height:100%;
+        }
+
+        .btn{
+          background: none;
+          outline: none;
+          border: none;
+          font-size: 21px;
+          margin: 3px;
+
+          a{
+              color: white;
+          }
+        }
+
+        .btn-with-hover {
+          background-color: aliceblue;
+          border-radius: 8px;
+          padding: 5px;
+          cursor: pointer;
+          font-size: 21px;
+          border: none;
+          margin-left: 5px;
+
+          &:hover{
+            background-color: green;
+            color: white;
+          }
+       }
+
+       .logo_img {
+        position: absolute;
+        top: 51px;
+        width: 111px;
+       }
+
+        .wrapper{
+            width:100%;
+            height:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            /* flex-direction: column; */
+            gap: 15px;
+        }
+        
+        .file-upload{
+            height: 50%;
+            width: 50%;
+            border-radius: 100px;
+            position:relative;
+            
+            display:flex;
+            justify-content:center;
+            align-items: center;  
+
+            border:4px solid #FFFFFF;
+            padding: 11px;
+            overflow:hidden;
+            background-image: linear-gradient(to bottom, #2590EB 50%, #123757 50%);
+            background-size: 100% 200%;
+            transition: all 1s;
+            color: #FFFFFF;
+            font-size:100px;
+        }
+
+        input[type='file']{
+            height:100%;
+            width:100%;
+            position:absolute;
+            top:0;
+            left:0;
+            opacity:0;
+            cursor:pointer;
+        }
+
+        .hover{
+            background-position: 0 -100%;
+            color:#2590EB;
+        }
+
+        .file-upload span{
+          font-size: 27px;
+          text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+      <div class="file-upload crop">
+          <img class="logo_img" src="./resize_icon.png"/>
+          <input type="file" onchange="manipulatePdf(event)" accept="application/pdf" />
+          <span> Upload Your File For Crop </span>
+      </div>
+
+      <div class="file-upload madhav">
+          <img class="logo_img" src="./icons/android-chrome-192x192.png"/>
+          <input type="file" onchange="manipulatePdf(event, true)" accept="application/pdf" />
+          <span> Upload Your File For Madhav </span>
+      </div>
+    </div>
+
+  <script>
+    
+  manipulatePdf = async (event, isMadhavHeaderChanged = false) => {
+    const fileUpload = event.target.parentElement;
+    const text = event.target.nextElementSibling;
+    fileUpload.classList.add('hover');
+    text.textContent = 'Processing...';
+    const file = event.target.files[0];
+    if (!file) return;
+    saveDetails(file.name);
+    const arrayBuffer = await file.arrayBuffer();
+    const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+
+    let headerImage;
+    if(isMadhavHeaderChanged) {
+        // Load the Madhav header image
+      const imageResponse = await fetch('./Madhav-x-ray.png');
+      const imageArrayBuffer = await imageResponse.arrayBuffer();
+      headerImage = await pdfDoc.embedPng(imageArrayBuffer);
+    }
+
+    // Set the height of the header and footer in px
+    const headerHeight = 101; // Example header height in px
+    const footerHeight = isMadhavHeaderChanged ? 0 : 127; // Example footer height in px
+
+    // Get the total number of pages
+    const totalPages = pdfDoc.getPages().length;
+
+    // Loop through all pages
+    for (let i = 0; i < totalPages; i++) {
+      const page = pdfDoc.getPages()[i];
+      const { width, height } = page.getSize();
+
+      // Clear the header content: add a white rectangle over the header area
+      page.drawRectangle({
+        x: 0,
+        y: height - headerHeight,
+        width: width,
+        height: headerHeight,
+        color: PDFLib.rgb(1, 1, 1), // White color
+      });
+
+      if(isMadhavHeaderChanged) {
+          // Add the Madhav header image
+        const imageWidth = width; // Use full page width
+        const imageHeight = headerHeight; // Use header height
+        
+        page.drawImage(headerImage, {
+          x: 0,
+          y: height - headerHeight,
+          width: imageWidth,
+          height: imageHeight,
+        });
+      } else {
+        // Clear the footer content: add a white rectangle over the footer area
+        page.drawRectangle({
+          x: 0,
+          y: 0,
+          width: width,
+          height: footerHeight,
+          color: PDFLib.rgb(1, 1, 1), // White color
+        });
+      }
+    }
+
+    // Convert the modified PDF to a byte array
+    const pdfBytes = await pdfDoc.save();
+
+    // Create a Blob from the PDF bytes
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+    // Create a download link for the modified PDF
+    const downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = file.name;
+    downloadLink.click();
+
+    text.textContent = 'File Downloaded';
+    setTimeout(() => {
+      text.textContent = 'Upload Your File';
+      fileUpload.classList.remove('hover');
+    }, 1000);
+    
+  };
+
+  function saveDetails(filename) {
+     // Options for fetch
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"  // Tells server the body is JSON
+        },
+        body: JSON.stringify({name: filename})  // Convert JS object to JSON string
+      };
+
+      // Make the POST request
+      fetch("https://records-red.vercel.app/cropPdf", options)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();  // Parse JSON response
+        })
+        .then(data => {
+          console.log("Success:", data);  // Handle successful response
+        })
+        .catch(error => {
+          console.error("Error:", error);  // Handle errors
+        });
+   }
+  
+   // Register service worker
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js");
+  }
+  </script>
+</body>
+</html>
