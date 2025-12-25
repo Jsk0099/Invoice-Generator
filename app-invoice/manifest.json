@@ -1,6 +1,6 @@
 {
   "name": "Invoice Generator",
-  "short_name": "Invoice",
+  "short_name": "Invoice Generator",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
