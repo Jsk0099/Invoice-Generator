@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>WebView File Receiver</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 16px;
+      background: #f7f7f7;
+    }
+
+    .card {
+      background: #fff;
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .label {
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    .value {
+      color: #444;
+      word-break: break-all;
+    }
+
+    .success {
+      margin-top: 12px;
+      color: green;
+      font-weight: 600;
+    }
+
+    button {
+      margin-top: 16px;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 6px;
+      background: #1976d2;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h2>📂 Shared File Info</h2>
+
+    <div id="info"></div>
+
+    <button onclick="useFile()">Use File (like &lt;input type=file&gt;)</button>
+
+    <div id="status" class="success"></div>
+  </div>
+
+<script>
+/* ---------- Helpers ---------- */
+
+function base64ToFile(base64, filename, mimeType, lastModified) {
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+
+  return new File(
+    [bytes],
+    filename,
+    {
+      type: mimeType,
+      lastModified: lastModified
+    }
+  );
+}
+
+/* ---------- Main ---------- */
+
+let receivedFile = null;
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (!window.AndroidBridge) {
+    document.body.innerHTML = "<h3>❌ AndroidBridge not available</h3>";
+    return;
+  }
+
+  const json = AndroidBridge.getSharedFileInfo();
+
+  if (!json) {
+    document.body.innerHTML = "<h3>No file shared</h3>";
+    return;
+  }
+
+  const info = JSON.parse(json);
+
+  // Create REAL JS File object
+  receivedFile = base64ToFile(
+    info.base64,
+    info.name,
+    info.mimeType,
+    info.lastModified
+  );
+
+  console.log("Received File:", receivedFile);
+  console.log("Is real File object:", receivedFile instanceof File);
+
+  // Show metadata
+  const el = document.getElementById("info");
+  el.innerHTML = `
+    <div class="label">Name</div>
+    <div class="value">${receivedFile.name}</div>
+
+    <div class="label">Type</div>
+    <div class="value">${receivedFile.type}</div>
+
+    <div class="label">Size</div>
+    <div class="value">${(receivedFile.size / 1024).toFixed(2)} KB</div>
+
+    <div class="label">Last Modified</div>
+    <div class="value">${new Date(receivedFile.lastModified).toString()}</div>
+  `;
+});
+
+/* ---------- Example Usage ---------- */
+
+function useFile() {
+  if (!receivedFile) return;
+
+  // Example: same as <input type="file">
+  const formData = new FormData();
+  formData.append("file", receivedFile);
+
+  // You can now:
+  // - send formData
+  // - use pdf-lib / PDF.js
+  // - image editing
+  // - validations
+
+  console.log("FormData file:", formData.get("file"));
+
+  document.getElementById("status").innerText =
+    "✅ File is a real JS File object and ready to use";
+}
+</script>
+
+</body>
+</html>
