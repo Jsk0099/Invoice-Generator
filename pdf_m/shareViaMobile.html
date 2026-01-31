@@ -129,6 +129,8 @@
 
   <script>
     let sharedFile = null;
+    let isFromShareIntent = false;
+    let isFromApp = false;
 
     function base64ToFile(base64, filename, mimeType, lastModified) {
       const binary = atob(base64);
@@ -152,12 +154,16 @@
       if (!window.AndroidBridge) {
         return;
       }
+
+      isFromApp = true;
       
       const json = AndroidBridge.getSharedFileInfo();
 
       if (!json) {
         return;
       }
+      
+      isFromShareIntent = true;
 
        // Hide the file upload elements
       document.querySelectorAll('.upload-file').forEach(uploadDiv => {
@@ -183,10 +189,6 @@
         info.mimeType,
         info.lastModified
       );
-      
-
-      console.log("Received File:", sharedFile);
-      console.log("Is real File object:", sharedFile instanceof File);
     });
     
   manipulatePdf = async (event, isMadhavHeaderChanged = false) => {
@@ -265,12 +267,13 @@
       text.textContent = 'Upload Your File';
       fileUpload.classList.remove('hover');
       sharedFile = null;
+      isFromShareIntent = false;
     }, 1000);
     
   };
 
   function downloadFromWebView(blob, file) {  
-    if (sharedFile) {
+    if (isFromApp) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64 = reader.result.split(",")[1];
@@ -280,10 +283,12 @@
           file.type
         );
 
-        // Close app after download
-        setTimeout(() => {
-          AndroidBridge.closeApp();
-        }, 300); // small delay for safety
+        if(isFromShareIntent) {
+          // Close app after download
+          setTimeout(() => {
+            AndroidBridge.closeApp();
+          }, 300); // small delay for safety
+        }
       };
       reader.readAsDataURL(blob);
     } else {
