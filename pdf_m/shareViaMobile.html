@@ -279,6 +279,11 @@
           file.name,
           file.type
         );
+
+        // Close app after download
+        setTimeout(() => {
+          AndroidBridge.closeApp();
+        }, 300); // small delay for safety
       };
       reader.readAsDataURL(blob);
     } else {
