@@ -152,8 +152,14 @@
       if (!window.AndroidBridge) {
         return;
       }
+      
+      const json = AndroidBridge.getSharedFileInfo();
 
-      // Hide the file upload elements
+      if (!json) {
+        return;
+      }
+
+       // Hide the file upload elements
       document.querySelectorAll('.upload-file').forEach(uploadDiv => {
         uploadDiv.style.display = 'none';
       });
@@ -167,12 +173,6 @@
           }
         });
       });
-
-      const json = AndroidBridge.getSharedFileInfo();
-
-      if (!json) {
-        return;
-      }
 
       const info = JSON.parse(json);
 
